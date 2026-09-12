@@ -1,0 +1,8 @@
+.venv/
+.idea/
+__pycache__/
+
+# keep the folder but ignore all content generated locally
+output/*.csv
+
+config.yaml
