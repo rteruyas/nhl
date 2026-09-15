@@ -4,5 +4,6 @@ __pycache__/
 
 # keep the folder but ignore all content generated locally
 output/*.csv
+logs/*.log
 
 config.yaml

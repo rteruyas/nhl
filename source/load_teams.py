@@ -32,9 +32,9 @@ def load_csv_to_postgres(csv_path: str):
     cur = conn.cursor()
 
     insert_query = """
-        INSERT INTO raw.teams (franchise_id, name, common_name, abbr, logo, conference, division)
+        INSERT INTO raw.teams (team_id, name, common_name, abbr, logo, conference, division)
         VALUES (%s, %s, %s, %s, %s, %s, %s)
-        ON CONFLICT (franchise_id) DO UPDATE SET
+        ON CONFLICT (team_id) DO UPDATE SET
             name = EXCLUDED.name,
             common_name = EXCLUDED.common_name,
             abbr = EXCLUDED.abbr,
@@ -49,7 +49,7 @@ def load_csv_to_postgres(csv_path: str):
 
         for row in reader:
             rows_to_insert.append((
-                int(row["franchise_id"]),
+                int(row["franchise_id"]), #remapping franchise_id from API to team_id in postgres
                 row["name"],
                 row["common_name"],
                 row["abbr"],

@@ -33,9 +33,9 @@ def load_csv_to_postgres(csv_path: str):
     cur = conn.cursor()
 
     insert_query = """
-        INSERT INTO raw.players (id, franchise_id, season, position_group, raw_data)
+        INSERT INTO raw.players (id, team_id, season, position_group, raw_data)
         VALUES (%s, %s, %s, %s, %s)
-        ON CONFLICT (id, franchise_id, season) DO UPDATE SET
+        ON CONFLICT (id, team_id, season) DO UPDATE SET
             position_group = EXCLUDED.position_group,
             raw_data = EXCLUDED.raw_data,
             updated_at = now();
