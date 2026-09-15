@@ -58,13 +58,17 @@ def load_csv_to_postgres(csv_path: str):
                 parse_dict_field(row["division"]),
             ))
 
-    cur.executemany(insert_query, rows_to_insert)
-    conn.commit()
-
-    print(f"Inserted/updated {len(rows_to_insert)} rows.")
-
-    cur.close()
-    conn.close()
+    try:
+        cur.executemany(insert_query, rows_to_insert)
+        conn.commit()
+        print(f"Inserted/updated {len(rows_to_insert)} rows.")
+    except Exception as e:
+        conn.rollback()
+        print(f"*** Load failed, transaction rolled back: {e}")
+        raise  # re-raise so the caller / orchestrator knows this run failed
+    finally:
+        cur.close()
+        conn.close()
 
 
 if __name__ == "__main__":
